@@ -1,6 +1,6 @@
 use dbUCF ;  
 
-
+# Dummy student data
 INSERT INTO Student(student_id, first_name, last_name) 
   VALUES ('9Fljjssz','Benjamin','Greene'),
         ('dD450NZS','Douglas','Ortiz'),
@@ -5003,12 +5003,13 @@ INSERT INTO Student(student_id, first_name, last_name)
         ('ROkHL2Wo','Edward','Santos'),
         ('lm3mxdIP','Maggie','Simmons');
  
+ # Add in the building types
 INSERT INTO Building_Type(type_name)
   VALUES  ('Academic'),
           ('Fitness'),
           ('Health');
  
- 
+ # Dummy building data
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES ('HEC', (SELECT id FROM Building_Type WHERE type_name='Academic' ), 'Harris Engineering', 300);
 INSERT INTO Academic(building_code, coordinator_name)
@@ -5051,7 +5052,7 @@ INSERT INTO Fitness(building_code, organizer_name)
  
            
  
- 
+ #Dummy resource data
 INSERT INTO Resource(resource_name, student_capacity)
     VALUES      ('Chair', 5),
                 ('Bench Press', 157),
@@ -5118,6 +5119,7 @@ INSERT INTO Resource(resource_name, student_capacity)
                 ('Desk', 94),
                 ('Desk', 64);
 
+#Add some dummy resources into the buildings
 INSERT INTO Building_Resource(resource_id, building_code)    
   VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='MRI Machine' LIMIT 1),
           (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy' LIMIT 1));
@@ -5137,3 +5139,21 @@ INSERT INTO Building_Resource(resource_id, building_code)
 INSERT INTO Building_Resource(resource_id, building_code)       
   VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='X-Ray Machine' LIMIT 1),           
           (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy' LIMIT 1));
+  
+INSERT INTO Usage_Record( student_id, resource_id )
+  VALUES  ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1));
+
+
+
+

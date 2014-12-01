@@ -1,0 +1,179 @@
+DROP TABLE IF EXISTS Student;
+CREATE TABLE Student(
+  student_id varchar(8) UNIQUE NOT NULL PRIMARY KEY, 
+  first_name varchar(20), 
+  last_name varchar(30) 
+);
+
+DROP TABLE IF EXISTS Resource;
+CREATE TABLE Resource(
+  resource_id INT NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,
+  resource_name varchar(20) NOT NULL, 
+  student_capacity INT
+);
+
+CREATE TABLE Building_Resource(
+  resource_id INT NOT NULL,
+  building_code VARCHAR(5) NOT NULL,
+  PRIMARY KEY(building_code, resource_id)
+);
+
+DROP TABLE IF EXISTS Usage_Record;
+CREATE TABLE Usage_Record(
+ 
+  id INT UNIQUE AUTO_INCREMENT, 
+  PRIMARY KEY(id),
+ 
+  resource_id INT,
+  student_id VARCHAR(20),
+  usage_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
+ 
+  INDEX (student_id),
+  FOREIGN KEY (student_id)
+    REFERENCES Student(student_id) ON DELETE CASCADE ON UPDATE CASCADE,
+ 
+  INDEX (resource_id),
+  FOREIGN KEY (resource_id)
+    REFERENCES Resource(resource_id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+ 
+
+DROP TABLE IF EXISTS Building_Type;
+CREATE TABLE Building_Type(
+    id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
+    type_name VARCHAR(10) UNIQUE
+);
+ 
+
+DROP TABLE IF EXISTS Building;
+CREATE TABLE Building(
+  building_code VARCHAR(5) UNIQUE PRIMARY KEY, 
+  building_type INT NOT NULL,
+  building_name VARCHAR(30) NOT NULL, 
+  human_capacity INT,
+  
+  INDEX (building_type),
+  FOREIGN KEY (building_type)
+    REFERENCES Building_Type(id)
+    ON DELETE CASCADE ON UPDATE CASCADE
+);
+ 
+  DROP TABLE IF EXISTS Academic;
+  CREATE TABLE Academic(
+    building_code VARCHAR(5) UNIQUE PRIMARY KEY,
+    coordinator_name VARCHAR(20),
+   
+    INDEX (building_code),
+    FOREIGN KEY (building_code)
+      REFERENCES Building(building_code)
+  );
+   
+  DROP TABLE IF EXISTS Fitness;
+  CREATE TABLE Fitness(
+    building_code VARCHAR(5) UNIQUE PRIMARY KEY,
+    organizer_name VARCHAR(20),
+    
+    INDEX (building_code),
+    FOREIGN KEY (building_code)
+      REFERENCES Building(building_code)
+  );
+   
+  DROP TABLE IF EXISTS Health;
+  CREATE TABLE Health(
+    building_code VARCHAR(5) UNIQUE PRIMARY KEY,
+    doctor_name VARCHAR(20),
+    
+    INDEX (building_code),
+    FOREIGN KEY (building_code)
+      REFERENCES Building(building_code)
+  );
+ 
+
+
+
+INSERT INTO Student(student_id, first_name, last_name) 
+  VALUES ('9Fljjssz','Benjamin','Greene'),
+        ('dD450NZS','Douglas','Ortiz'),
+        ('kjvu1WtS','Rhoda','Foster'),
+        ('QbAot6oL','Walter','Carr'),
+        ('SNrb0Adh','Etta','Hardy'),
+        ('ZwrRRcxQ','William','Copeland'),
+        ('JNBHbSNy','Charles','Rodgers'),
+        ('O6BGOaBP','Elizabeth','Jones'),
+        ('2DHsxxhU','Vera','Waters'),
+        ('kF7mtaHA','Connor','French'),
+        ('7o1uiJ4H','Elmer','Stokes'),
+        ('BzW6W0ZQ','Lily','Thomas');
+
+INSERT INTO Building_Type(type_name)
+  VALUES  ('Academic'),
+          ('Fitness'),
+          ('Health');
+ 
+INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
+    VALUES ('HEC', (SELECT id FROM Building_Type WHERE type_name='Academic' ), 'Harris Engineering', 300);
+INSERT INTO Academic(building_code, coordinator_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='HEC'), 'Douglas Adams');
+
+INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
+    VALUES ('EGN', (SELECT id FROM Building_Type WHERE type_name='Academic' ), 'Engineering', 300);
+INSERT INTO Academic(building_code, coordinator_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='EGN'), 'Billy Madison');
+ 
+INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
+    VALUES ('HLT', (SELECT id FROM Building_Type WHERE type_name='Health' ), 'Pharmacy', 300);
+INSERT INTO Health(building_code, doctor_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='HLT'), 'Dr. Johnson');
+ 
+INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
+    VALUES ('GYM', (SELECT id FROM Building_Type WHERE type_name='Fitness' ), 'UCF Gym', 3000);
+INSERT INTO Fitness(building_code, organizer_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='GYM'), 'Billy Bob');
+
+INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
+    VALUES ('ER', (SELECT id FROM Building_Type WHERE type_name='Health' ), 'Emergency Room', 300);
+INSERT INTO Health(building_code, doctor_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='ER'), 'Dr. Bradely');
+
+INSERT INTO Resource(resource_name, student_capacity)
+    VALUES      ('Chair', 5),
+                ('Bench Press', 73),
+                ('MRI Machine', 110),
+                ('Chairs', 17),
+                ('X-Ray Machine', 111),
+                ('Desk', 64);
+
+INSERT INTO Building_Resource(resource_id, building_code)    
+  VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='MRI Machine' LIMIT 1),
+          (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy' LIMIT 1));
+          
+INSERT INTO Building_Resource(resource_id, building_code)    
+  VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='Desk' LIMIT 1),
+          (SELECT building_code FROM Academic NATURAL JOIN Building WHERE building_name='Harris Engineering'));          
+          
+INSERT INTO Building_Resource(resource_id, building_code)       
+  VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='Chairs' LIMIT 1),           
+          (SELECT building_code FROM Academic NATURAL JOIN Building WHERE building_name='Harris Engineering'));
+
+INSERT INTO Building_Resource(resource_id, building_code)       
+  VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='Desk' LIMIT 1),           
+          (SELECT building_code FROM Building WHERE building_name='Pharmacy' LIMIT 1));
+        
+INSERT INTO Building_Resource(resource_id, building_code)       
+  VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='X-Ray Machine' LIMIT 1),           
+          (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy' LIMIT 1));
+
+
+INSERT INTO Usage_Record( student_id, resource_id )
+  VALUES  ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1));
