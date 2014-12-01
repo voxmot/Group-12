@@ -2,6 +2,7 @@ DROP DATABASE IF EXISTS dbUCF ;
 CREATE DATABASE IF NOT EXISTS dbUCF; 
 USE dbUCF; 
 
+# Student table
 DROP TABLE IF EXISTS Student;
 CREATE TABLE Student(
   student_id varchar(8) UNIQUE NOT NULL PRIMARY KEY, 
@@ -9,7 +10,7 @@ CREATE TABLE Student(
   last_name varchar(30) 
 );
  
- 
+ # Resource table
 DROP TABLE IF EXISTS Resource;
 CREATE TABLE Resource(
   resource_id INT NOT NULL PRIMARY KEY UNIQUE AUTO_INCREMENT,
@@ -17,13 +18,14 @@ CREATE TABLE Resource(
   student_capacity INT
 );
  
+ # Building resource multivalued attribute table
 CREATE TABLE Building_Resource(
   resource_id INT NOT NULL UNIQUE,
   building_code VARCHAR(5) NOT NULL,
   PRIMARY KEY(building_code, resource_id)
 );
  
- 
+ # Usage record table - holds gathered data (student ID card swipe)
 DROP TABLE IF EXISTS Usage_Record;
 CREATE TABLE Usage_Record(
  
@@ -47,17 +49,14 @@ CREATE TABLE Usage_Record(
  
  
  
- 
+ # Table that holds building types
 DROP TABLE IF EXISTS Building_Type;
 CREATE TABLE Building_Type(
     id INT PRIMARY KEY UNIQUE AUTO_INCREMENT,
     type_name VARCHAR(10) UNIQUE
 );
  
- 
- 
- 
- 
+ # Table that holds buildings
 DROP TABLE IF EXISTS Building;
 CREATE TABLE Building(
   building_code VARCHAR(5) UNIQUE PRIMARY KEY, 
@@ -71,34 +70,38 @@ CREATE TABLE Building(
     ON DELETE CASCADE ON UPDATE CASCADE
 );
  
+ 
 # Building Sub-types
-DROP TABLE IF EXISTS Academic;
-CREATE TABLE Academic(
-  building_code VARCHAR(5) UNIQUE PRIMARY KEY,
-  coordinator_name VARCHAR(20),
- 
-  INDEX (building_code),
-  FOREIGN KEY (building_code)
-    REFERENCES Building(building_code)
-);
- 
-DROP TABLE IF EXISTS Fitness;
-CREATE TABLE Fitness(
-  building_code VARCHAR(5) UNIQUE PRIMARY KEY,
-  organizer_name VARCHAR(20),
-  
-  INDEX (building_code),
-  FOREIGN KEY (building_code)
-    REFERENCES Building(building_code)
-);
- 
-DROP TABLE IF EXISTS Health;
-CREATE TABLE Health(
-  building_code VARCHAR(5) UNIQUE PRIMARY KEY,
-  doctor_name VARCHAR(20),
-  
-  INDEX (building_code),
-  FOREIGN KEY (building_code)
-    REFERENCES Building(building_code)
-);
+   # Academic building type
+  DROP TABLE IF EXISTS Academic;
+  CREATE TABLE Academic(
+    building_code VARCHAR(5) UNIQUE PRIMARY KEY,
+    coordinator_name VARCHAR(20),
+   
+    INDEX (building_code),
+    FOREIGN KEY (building_code)
+      REFERENCES Building(building_code)
+  );
+   
+   # Fitness building type
+  DROP TABLE IF EXISTS Fitness;
+  CREATE TABLE Fitness(
+    building_code VARCHAR(5) UNIQUE PRIMARY KEY,
+    organizer_name VARCHAR(20),
+    
+    INDEX (building_code),
+    FOREIGN KEY (building_code)
+      REFERENCES Building(building_code)
+  );
+   
+   # Health building type
+  DROP TABLE IF EXISTS Health;
+  CREATE TABLE Health(
+    building_code VARCHAR(5) UNIQUE PRIMARY KEY,
+    doctor_name VARCHAR(20),
+    
+    INDEX (building_code),
+    FOREIGN KEY (building_code)
+      REFERENCES Building(building_code)
+  );
  
