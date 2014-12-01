@@ -131,27 +131,27 @@ INSERT INTO Academic(building_code, coordinator_name)
  
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES ('HLT', (SELECT id FROM Building_Type WHERE type_name='Health' ), 'Pharmacy', 300);
-INSERT INTO Health(building_code, doctor, facility_name)
+INSERT INTO Health(building_code, doctor_name)
     VALUES ((SELECT building_code FROM Building WHERE building_code='HLT'), 'Dr. Johnson’);
  
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES ('GYM', (SELECT id FROM Building_Type WHERE type_name='Fitness' ), 'UCF Gym', 3000);
-INSERT INTO Fitness(building_code, facility_name)
+INSERT INTO Fitness(building_code, organizer_name)
     VALUES ((SELECT building_code FROM Building WHERE building_code='GYM'), ‘Billy Bob');
 
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES (‘ER’, (SELECT id FROM Building_Type WHERE type_name='Health' ), ‘Emergency Room’, 300);
-INSERT INTO Health(building_code, doctor, facility_name)
+INSERT INTO Health(building_code, doctor_name)
     VALUES ((SELECT building_code FROM Building WHERE building_code=‘ER’), 'Dr. Bradely’);
 
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES (‘POL’, (SELECT id FROM Building_Type WHERE type_name='Fitness' ), ‘Swimming Pool’, 3000);
-INSERT INTO Fitness(building_code, facility_name)
+INSERT INTO Fitness(building_code, organizer_name)
     VALUES ((SELECT building_code FROM Building WHERE building_code=‘POL’), ‘James Buchannon’);
 
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES (‘RBL’, (SELECT id FROM Building_Type WHERE type_name='Fitness' ), ‘Racquetball Court’, 3000);
-INSERT INTO Fitness(building_code, facility_name)
+INSERT INTO Fitness(building_code, organizer_name)
     VALUES ((SELECT building_code FROM Building WHERE building_code=‘RBL’), ‘Matthew Goddard’);
  
            
