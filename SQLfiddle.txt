@@ -1,4 +1,3 @@
-
 DROP TABLE IF EXISTS Student;
 CREATE TABLE Student(
   student_id varchar(8) UNIQUE NOT NULL PRIMARY KEY, 
@@ -138,23 +137,6 @@ INSERT INTO Health(building_code, doctor_name)
 
 INSERT INTO Resource(resource_name, student_capacity)
     VALUES      ('Chair', 5),
-                ('Bench Press', 157),
-                ('Chairs', 23),
-                ('Bench Press', 139),
-                ('Desk', 18),
-                ('Chairs', 77),
-                ('Bench Press', 37),
-                ('Chairs', 191),
-                ('Bench Press', 121),
-                ('Chairs', 23),
-                ('Bench Press', 31),
-                ('MRI Machine', 140),
-                ('X-Ray Machine', 63),
-                ('Chairs', 179),
-                ('X-Ray Machine', 57),
-                ('Bench Press', 31),
-                ('Desk', 126),
-                ('Chairs', 71),
                 ('Bench Press', 73),
                 ('MRI Machine', 110),
                 ('Chairs', 17),
@@ -180,9 +162,18 @@ INSERT INTO Building_Resource(resource_id, building_code)
 INSERT INTO Building_Resource(resource_id, building_code)       
   VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='X-Ray Machine' LIMIT 1),           
           (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy' LIMIT 1));
-          
+
+
 INSERT INTO Usage_Record( student_id, resource_id )
-    VALUES  ((SELECT student_id from Student LIMIT 1,1), (SELECT resource_id FROM Resource LIMIT 1,1)),
-            ((SELECT student_id from Student LIMIT 2,1), (SELECT resource_id FROM Resource LIMIT 2,1)),
-            ((SELECT student_id from Student LIMIT 3,1), (SELECT resource_id FROM Resource LIMIT 3,1)),
-            ((SELECT student_id from Student LIMIT 4,1), (SELECT resource_id FROM Resource LIMIT 4,1));
+  VALUES  ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1));
