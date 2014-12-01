@@ -5139,3 +5139,21 @@ INSERT INTO Building_Resource(resource_id, building_code)
 INSERT INTO Building_Resource(resource_id, building_code)       
   VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='X-Ray Machine' LIMIT 1),           
           (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy' LIMIT 1));
+  
+INSERT INTO Usage_Record( student_id, resource_id )
+  VALUES  ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1)),
+          ((SELECT student_id FROM Student ORDER BY RAND() LIMIT 1), (SELECT resource_id FROM Building_Resource ORDER BY RAND() LIMIT 1));
+
+
+
+
