@@ -14,7 +14,7 @@ CREATE TABLE Resource(
 );
 
 CREATE TABLE Building_Resource(
-  resource_id INT NOT NULL UNIQUE,
+  resource_id INT NOT NULL,
   building_code VARCHAR(5) NOT NULL,
   PRIMARY KEY(building_code, resource_id)
 );
@@ -104,43 +104,37 @@ INSERT INTO Student(student_id, first_name, last_name)
         ('2DHsxxhU','Vera','Waters'),
         ('kF7mtaHA','Connor','French'),
         ('7o1uiJ4H','Elmer','Stokes'),
-        ('PzN7Q26U','Gilbert','Murphy'),
-        ('LT29SzMg','Garrett','Flores'),
-        ('aKCzQSdY','Bill','Page'),
-        ('ULiUpBp6','Aiden','Copeland'),
-        ('1CxztaWB','Troy','Stephens'),
-        ('tDjI9qVk','Elizabeth','Cohen'),
-        ('xKmLU1kM','Jonathan','Wallace'),
-        ('XP04xoIF','Ora','McCarthy'),
-        ('GU5rKV8M','Luis','Allen'),
-        ('lIxLdI4P','Celia','Simmons'),
-        ('GH3TkpU8','Stephen','Graves'),
-        ('WJyGWSZJ','Roy','Rhodes'),
-        ('NR8xukqZ','Ethel','Howell'),
         ('BzW6W0ZQ','Lily','Thomas');
-
 
 INSERT INTO Building_Type(type_name)
   VALUES  ('Academic'),
           ('Fitness'),
           ('Health');
-
-
+ 
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES ('HEC', (SELECT id FROM Building_Type WHERE type_name='Academic' ), 'Harris Engineering', 300);
 INSERT INTO Academic(building_code, coordinator_name)
     VALUES ((SELECT building_code FROM Building WHERE building_code='HEC'), 'Douglas Adams');
 
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
+    VALUES ('EGN', (SELECT id FROM Building_Type WHERE type_name='Academic' ), 'Engineering', 300);
+INSERT INTO Academic(building_code, coordinator_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='EGN'), 'Billy Madison');
+ 
+INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES ('HLT', (SELECT id FROM Building_Type WHERE type_name='Health' ), 'Pharmacy', 300);
-INSERT INTO Health(building_code, doctor)
-    VALUES ((SELECT building_code FROM Building WHERE building_code='HLTA'), 'Dr. Johnson');
-
+INSERT INTO Health(building_code, doctor_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='HLT'), 'Dr. Johnson');
+ 
 INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
     VALUES ('GYM', (SELECT id FROM Building_Type WHERE type_name='Fitness' ), 'UCF Gym', 3000);
-INSERT INTO Fitness(building_code, facility_name)
-    VALUES ((SELECT building_code FROM Building WHERE building_code='GYM'), 'Basketball Court');
+INSERT INTO Fitness(building_code, organizer_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='GYM'), 'Billy Bob');
 
+INSERT INTO Building(building_code, building_type, building_name, human_capacity) 
+    VALUES ('ER', (SELECT id FROM Building_Type WHERE type_name='Health' ), 'Emergency Room', 300);
+INSERT INTO Health(building_code, doctor_name)
+    VALUES ((SELECT building_code FROM Building WHERE building_code='ER'), 'Dr. Bradely');
 
 INSERT INTO Resource(resource_name, student_capacity)
     VALUES      ('Chair', 5),
@@ -148,45 +142,24 @@ INSERT INTO Resource(resource_name, student_capacity)
                 ('Chairs', 23),
                 ('Bench Press', 139),
                 ('Desk', 18),
-                ('Desk', 160),
-                ('MRI Machine', 92),
                 ('Chairs', 77),
                 ('Bench Press', 37),
-                ('Desk', 78),
+                ('Chairs', 191),
+                ('Bench Press', 121),
+                ('Chairs', 23),
+                ('Bench Press', 31),
+                ('MRI Machine', 140),
+                ('X-Ray Machine', 63),
+                ('Chairs', 179),
+                ('X-Ray Machine', 57),
+                ('Bench Press', 31),
+                ('Desk', 126),
+                ('Chairs', 71),
+                ('Bench Press', 73),
+                ('MRI Machine', 110),
+                ('Chairs', 17),
                 ('X-Ray Machine', 111),
-                ('Desk', 108),
-                ('X-Ray Machine', 105),
-                ('MRI Machine', 134),
-                ('MRI Machine', 92),
-                ('Bench Press', 79),
-                ('Desk', 58),
-                ('MRI Machine', 86),
-                ('Desk', 162),
-                ('Desk', 124),
-                ('MRI Machine', 86),
-                ('Desk', 132),
-                ('Desk', 60),
-                ('X-Ray Machine', 27),
-                ('Chairs', 5),
-                ('Desk', 94),
-                ('Desk', 64),
-                ('Chairs', 47),
-                ('Chairs', 143),
-                ('Bench Press', 145),
-                ('Desk', 198),
-                ('Desk', 12),
-                ('Desk', 82),
-                ('MRI Machine', 80),
-                ('X-Ray Machine', 183),
-                ('X-Ray Machine', 75),
-                ('Desk', 4),
-                ('MRI Machine', 158),
-                ('Desk', 100),
-                ('Desk', 42),
-                ('Chairs', 143),
-                ('MRI Machine', 14),
-                ('Desk', 58);
-
+                ('Desk', 64);
 
 INSERT INTO Building_Resource(resource_id, building_code)    
   VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='MRI Machine' LIMIT 1),
@@ -202,13 +175,12 @@ INSERT INTO Building_Resource(resource_id, building_code)
 
 INSERT INTO Building_Resource(resource_id, building_code)       
   VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='Desk' LIMIT 1),           
-          (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy'));
-          
+          (SELECT building_code FROM Building WHERE building_name='Pharmacy' LIMIT 1));
+        
 INSERT INTO Building_Resource(resource_id, building_code)       
   VALUES ((SELECT resource_id FROM Resource WHERE Resource.resource_name='X-Ray Machine' LIMIT 1),           
-          (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy'));
-
-
+          (SELECT building_code FROM Health NATURAL JOIN Building WHERE building_name='Pharmacy' LIMIT 1));
+          
 INSERT INTO Usage_Record( student_id, resource_id )
     VALUES  ((SELECT student_id from Student LIMIT 1,1), (SELECT resource_id FROM Resource LIMIT 1,1)),
             ((SELECT student_id from Student LIMIT 2,1), (SELECT resource_id FROM Resource LIMIT 2,1)),
