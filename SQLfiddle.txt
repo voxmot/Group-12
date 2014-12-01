@@ -1,0 +1,5 @@
+INSERT INTO Usage_Record( student_id, resource_id )
+    VALUES  ((SELECT student_id from Student LIMIT 1,1), (SELECT resource_id FROM Resource LIMIT 1,1)),
+            ((SELECT student_id from Student LIMIT 2,1), (SELECT resource_id FROM Resource LIMIT 2,1)),
+            ((SELECT student_id from Student LIMIT 3,1), (SELECT resource_id FROM Resource LIMIT 3,1)),
+            ((SELECT student_id from Student LIMIT 4,1), (SELECT resource_id FROM Resource LIMIT 4,1));
